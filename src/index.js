@@ -14,8 +14,7 @@ import './i18n';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
- 
+root.render(  
     <BrowserRouter>
       <Provider store={store}> 
          <Suspense fallback="...is loading">
