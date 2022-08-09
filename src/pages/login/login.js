@@ -6,6 +6,8 @@ import { getAuth, signInWithPopup } from "firebase/auth"
 import { useDispatch } from "react-redux";
 import { login} from '../../redux/userSlice'
 import { Trans, useTranslation } from 'react-i18next';
+import { getDefaultMiddleware } from '@reduxjs/toolkit';
+import { WindowSharp } from "@mui/icons-material";
 
 const LogIn = () => {
     const { useState } = React;
@@ -27,7 +29,8 @@ const LogIn = () => {
     const auth = getAuth();
     const provider = new GoogleAuthProvider();
 
-    const googleLogin = () => {
+      const googleLogin = () => {
+        
         signInWithPopup(auth, provider)
             .then((result) => {
                 // This gives you a Google Access Token. You can use it to access the Google API.
@@ -42,6 +45,8 @@ const LogIn = () => {
                         })
                     )
                     navigate("../profile")
+                  
+
                 }
                     // ...
             }).catch((error) => {

@@ -12,8 +12,26 @@ import './i18n';
 
 
 
+  const getlocation = async (e) => {
+        e.preventDefault();
+     if (navigator.geolocation) {
+     await navigator.geolocation.getCurrentPosition(function (getCurrentPosition) {
+        const coords = [{
+          "lati": getCurrentPosition.coords.latitude,
+          "longi": getCurrentPosition.coords.longitude
+        }]
+      localStorage.setItem("Cords", JSON.stringify(coords))
+         });
+    } else {
+      alert("error occured while fetching your location")
+    }
+  }
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+ window.onload = function (e) {
+                        getlocation(e);
+};
+
 root.render(  
     <BrowserRouter>
       <Provider store={store}> 

@@ -5,6 +5,7 @@
   "dependencies": {
     "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
+    "@google-cloud/firestore": "^6.0.0",
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.9.3",
     "@mui/styled-engine-sc": "^5.9.3",
@@ -21,6 +22,7 @@
     "i18next-browser-languagedetector": "^6.1.4",
     "i18next-http-backend": "^1.4.1",
     "i18next-locize-backend": "^5.1.2",
+    "ngeohash": "^0.6.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-i18next": "^11.18.3",

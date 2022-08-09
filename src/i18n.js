@@ -1,10 +1,6 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
-
-
-
-
 i18n
   // detect user language
   // learn more: https://github.com/i18next/i18next-browser-languageDetector
@@ -23,7 +19,7 @@ i18n
       en: {
         translation: {  description: {
             part1: 'Home',
-          part2: 'Login',
+            part2: 'Login',
             part3:"Profile"
         },
           Profile: {
@@ -33,7 +29,7 @@ i18n
             4: "Latitude",
             5: "Longitude",
             6: "Del",
-            7:"Please Login to do Modification!"
+            7:"Only Author of post have the rights to do Modification!"
           },  Post: {
             1: "Hello",
             2: "Submit",
@@ -81,13 +77,13 @@ i18n
             part3:"प्रोफ़ाइल",
             },
             Profile: {
-            1: "पोस्ट जोड़ें",
-            2: "नाम",
-            3: "ईमेल",
-            4: "अक्षांश",
-            5: "देशान्तर",
+              1: "पोस्ट जोड़ें",
+              2: "नाम",
+              3: "ईमेल",
+              4: "अक्षांश",
+              5: "देशान्तर",
               6: "मिटाना",
-            7:"संशोधन करने के लिए कृपया लॉगिन करें!"
+              7: "केवल पोस्ट के लेखक के पास संशोधन करने का अधिकार है!"
             },
             Post: {
               1: "नमस्ते",
@@ -125,8 +121,7 @@ i18n
             2: "स्वागत है",
             3: "या" ,
             4: "क्या आपके पास पहले से एक खाता मौजूद है?",
-            
-                 }
+                             }
         }
       }
     }

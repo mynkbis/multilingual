@@ -4,12 +4,15 @@ import { collection, query, onSnapshot, doc, updateDoc, deleteDoc,where, addDoc,
 import { onAuthStateChanged } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation, Trans } from 'react-i18next';
+import geohash from "ngeohash";
 import './post.css'
+import { GeoFire } from 'geofire'
 
 const Post = () => {
   const [name, setname] = useState();
   const [desc, setDesc]=useState()
   const navigate = useNavigate();
+
   const {i18n } = useTranslation();
   
   const [user, setUser] = useState({})
@@ -22,6 +25,7 @@ const Post = () => {
     const user1 = localStorage.getItem("User1")
     return () => unsubscribe()        
  },[])
+  
   
   
   const getlocation = (e) => {
@@ -47,10 +51,21 @@ const Post = () => {
   const location = JSON.parse(localStorage.getItem("Cords"))
   // console.log("prodcut",userData) 
   
+  const loci = JSON.parse(localStorage.getItem('Cords'));
+  const lng = loci[0].longi;
+  const lat= loci[0].lati
+  
+  const hash = geohash.encode(lat, lng);
+  console.log("from hash",hash)
+  
+
+  // {/*submitting input data to database */ }
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     await addDoc(collection(db, "users"), {
       userLocation: location.map((loc) => loc),
+      geohash: hash,
       UserName: name,
       Description: desc,
       createdAt: serverTimestamp(),
@@ -59,6 +74,11 @@ const Post = () => {
     })
     navigate("../home")
   }
+
+
+
+
+
     
   return (
     <div className="container">
