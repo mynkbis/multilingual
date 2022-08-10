@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import "./login.css"
 import { signInWithEmailAndPassword, GoogleAuthProvider } from "firebase/auth"
 import { Link, useNavigate } from 'react-router-dom';
@@ -22,7 +22,27 @@ const LogIn = () => {
         email: "",
         password:""
     });
+    useEffect(() => {
+         window.onload = function (e) {
+      getlocation(e);
+    };
     
+  const getlocation = async (e) => {
+    e.preventDefault();
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function (getCurrentPosition) {
+        const coords = [{
+          "lati": getCurrentPosition.coords.latitude,
+          "longi": getCurrentPosition.coords.longitude
+        }]
+        localStorage.setItem("Cords", JSON.stringify(coords))
+      });
+    } else {
+      alert("error occured while fetching your location")
+    }
+  }
+    })
+
     const { t, i18n } = useTranslation();
     const [wemail, setwemail] = useState(false);
     const [wpassword, setwpassword] = useState(false);
@@ -44,7 +64,7 @@ const LogIn = () => {
                             user: result.user,                                 
                         })
                     )
-                    navigate("../profile")
+                    navigate("../home")
                   
 
                 }
@@ -93,7 +113,7 @@ const LogIn = () => {
         const user = await signInWithEmailAndPassword(auth, inputText.email, inputText.password)
         console.log("user details", user)
         if (user) {            
-            navigate('../profile')
+            navigate('../home')
         }       
         // using inbuit method of firebase fr signing in.
        
@@ -105,7 +125,7 @@ const LogIn = () => {
         else if (inputText.password == "")
             setwpassword(true);
         else {
-            alert("form submitted");
+            alert("Login Successfull");
         }
     }     
 

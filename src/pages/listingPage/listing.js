@@ -1,5 +1,8 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState } from 'react'
-import { collection, query, onSnapshot, doc, updateDoc, deleteDoc,where, addDoc, orderBy} from 'firebase/firestore'
+import { collection, query, onSnapshot, doc, updateDoc, deleteDoc,where, addDoc, orderBy, endAt, QuerySnapshot, getDocs} from 'firebase/firestore'
  import { auth, db } from '../../firebase'
 import { onAuthStateChanged } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom'
@@ -7,6 +10,12 @@ import './listing.css'
 import geohash from "ngeohash";
 import {  BsTrash} from 'react-icons/bs'
 import { Trans, useTranslation } from 'react-i18next';
+import { getFirestore } from "firebase/firestore"
+import { startAt } from 'firebase/database'
+import { async } from '@firebase/util'
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+const geofire = require('geofire-common');
 
 
 const Listing = () => {
@@ -22,31 +31,30 @@ const Listing = () => {
     window.onload = function (e) {
       getlocation(e);
     };
-
-    let unsubscribe = onAuthStateChanged(auth, (currentUser) =>
-    {
+ 
+    let unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser)
-      localStorage.setItem("User1", user.email)
+      // localStorage.setItem("User1", user.email)
     })
-    // const LocalUser = localStorage.getItem("User1")
+    
    
     const q = query(collection(db, "users"), orderBy("createdAt", "desc"));
-    const unsub = onSnapshot(q, (QuerySnapshot) => {    
-      let todoArray = [];
+    
+    const unsub = onSnapshot(q, (QuerySnapshot) => {
+      let geoArray = [];
       QuerySnapshot.forEach((doc) => {
-        todoArray.push({ ...doc.data(), id: doc.id })
+        geoArray.push({ ...doc.data(), id: doc.id })
       });
-      setUserData(todoArray)
-     
+      setUserData(geoArray)
       navigate("../home")
-     })       
+    })
     // eslint-disable-next-line no-sequences
     return () => unsub, unsubscribe()
 
   }, [])
          
   const getlocation = async (e) => {
-        e.preventDefault();
+    e.preventDefault();
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function (getCurrentPosition) {
         const coords = [{
@@ -54,7 +62,7 @@ const Listing = () => {
           "longi": getCurrentPosition.coords.longitude
         }]
         localStorage.setItem("Cords", JSON.stringify(coords))
-          });
+      });
     } else {
       alert("error occured while fetching your location")
     }
@@ -75,54 +83,119 @@ const Listing = () => {
   //   )
   // }
 
+
+
   // const place = JSON.parse(localStorage.getItem('Cords'));
-  // const lng = loci[0].longi;
-  // const lat = loci[0].lati
+  //  const lng = place[0].longi;
+  // const lat = place[0].lati
+
+
+//   const lng = 22.1766701;
+//   const lat = 78.0080745
+ 
+//   const radiusInM = 50 * 1000;
+//  const center = [lat, lng];
+//   const bounds = geofire.geohashQueryBounds(center, radiusInM);
+//  // const geohash=`tsz6x57ex`
+     
+//   const locts = async () => {
+//     console.log("clicked")
+//     for (const b of bounds) {
+//       const querySnapshot = await getDocs(collection(db, "users"),
+       
+//         orderBy('geohash')
+//         , startAt(b[0])
+//         , endAt(b[1]));
+//       console.log("q,", querySnapshot);
+//       let geoArray = [];
+//       querySnapshot.forEach((doc) => {
+//         geoArray.push(doc.data())
+//         console.log(geoArray)
+//       })
+//     }
+ 
+//   }
+
+
+ const locts = async () => {
+  
+   
+   
+   const center = [27.1766701, 78.0080745];
+  const radiusInM = 50 * 1000;
+
+  // Each item in 'bounds' represents a startAt/endAt pair. We have to issue
+  // a separate query for each pair. There can be up to 9 pairs of bounds
+  // depending on overlap, but in most cases there are 4.
+  const bounds = geofire.geohashQueryBounds(center, radiusInM);
+  const promises = [];
+  for (const b of bounds) {
+    const q = await getDocs(collection(db, "users"),
+      orderBy('geohash')
+      ,startAt(b[0])
+      ,endAt(b[1]));
+
+    promises.push(q);
+    console.log("p",promises)
+  }
+
+  // Collect all the query results together into a single list
+  Promise.all(promises).then((snapshots) => {
+    const matchingDocs = [];
+
+    for (const snap of snapshots) {
+      for (const doc of snap.docs) {
+        const lat = doc.get('userLocation.lati');
+        const lng = doc.get('userLocation.longi');
+
+        // We have to filter out a few false positives due to GeoHash
+        // accuracy, but most will match
+        const distanceInKm = geofire.distanceBetween([lat, lng], center);
+        const distanceInM = distanceInKm * 1000;
+        if (distanceInM <= radiusInM) {
+          matchingDocs.push(doc);
+        }
+      }
+    }
+
+    return matchingDocs;
+  })
+    // [END_EXCLUDE]
+  }
+
+  // [END fs_geo_query_hashes]
+   
+
+
+
+
+
+
+
+   
+
+
   
   
-const getGeohashRange = function (latitude, longitude, distance) {
-    var lat = 0.0144927536231884; // degrees latitude per mile
-    var lon = 0.0181818181818182; // degrees longitude per mile
-    var lowerLat = latitude - lat * distance;
-    var lowerLon = longitude - lon * distance;
-    var upperLat = latitude + lat * distance;
-    var upperLon = longitude + lon * distance;
-    var lower = geohash.encode(lowerLat, lowerLon);
-    var upper = geohash.encode(upperLat, upperLon);
-    return {
-        lower: lower,
-        upper: upper
-    };
-};
-// Retrieve the current coordinates using the navigator API
-// navigator.geolocation.getCurrentPosition(function (position) {
-//     var _a = position.coords, latitude = _a.latitude, longitude = _a.longitude;
-//     var range = getGeohashRange(latitude, longitude, 10);
-    
-//         db.collection("Users")
-//         .where("geohash", ">=", range.lower)
-//         .where("geohash", "<=", range.upper)
-//         .onSnapshot(function (snapshot) {
-//         // Your own custom logic here
-//         console.log(snapshot.docs);
-//     });
-// });
 
 
+  
 
+  
 
   return (
     <div style={{ "backgroundColor": "#eee", }}> <h3 style={{ paddingTop: "1rem", textAlign: "center", color: "#ff805d" }}>
       <Trans i18nKey="List.3">All Posts</Trans></h3>
       <div style={{ textAlign: "center" }}>
-        <input style={{ width: "20rem", height: "2rem", border: "none", margin: "1rem",}}
+        <input style={{ width: "20rem", height: "2rem", border: "none", margin: "1rem", }}
           type="search" value={search} placeholder=" Search" onChange={(e) => { setSearch(e.target.value) }} />
       </div>
       <div>Location Filter
-        <input type="integer" />
-             </div>
+        {/* <input type="integer" onChange={()=>{geohash()}} /> */}
+        <button onClick={() => { locts() }}>Location</button>
+      </div>
       <div className='container1'>
-        {!userData ? <div> Loading...</div> :
+        {!userData && !userData ? <div> Loading...</div> :
           userData.filter((data) => {
             if (search === "") {
               return data
@@ -134,7 +207,7 @@ const getGeohashRange = function (latitude, longitude, distance) {
               <div key={data.id}>
                 <div className='containerBox1'>
                   <div className='card'><strong><Trans i18nKey="List.2">Title</Trans></strong>
-                    : {data.Description ? data.Description : "----NA-----"}     
+                    : {data.Description ? data.Description : "----NA-----"}
                     <hr />  <hr />
                     <div><strong><Trans i18nKey="Profile.2">Name</Trans>: </strong>
                       {data.UserName && data.UserName ? data.UserName : "---NA---"}
@@ -155,10 +228,10 @@ const getGeohashRange = function (latitude, longitude, distance) {
               
                   
 
-            {/* { currentUser=== data.email && user?  <button onClick={() => {
+                    {/* { currentUser=== data.email && user?  <button onClick={() => {
             handleDelete(data.id)
               }} >Del</button>: ""}   */}
-                    {!user? "": <div> {user.email===data.email && user? <button className='buttonPosition' onClick={() => {
+                    {!user ? "" : <div> {user.email === data.email && user ? <button className='buttonPosition' onClick={() => {
                       handleDelete(data.id)
                     }}><BsTrash size="1rem" border="none" color='#ff805d' />
                     </button> : <em><Trans i18nKey="Profile.7">Only Author have right to do Modification!</Trans></em>}</div>}
@@ -171,8 +244,9 @@ const getGeohashRange = function (latitude, longitude, distance) {
             )
           })}
       </div>
-    </div> 
+    </div>
   )
+
 }
 
 export default Listing;

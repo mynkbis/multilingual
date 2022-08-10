@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { collection, query, onSnapshot, doc, updateDoc, deleteDoc,where, addDoc, serverTimestamp, orderBy } from 'firebase/firestore'
  import { auth, db } from '../../firebase'
 import { onAuthStateChanged } from 'firebase/auth'
@@ -16,6 +16,7 @@ const Post = () => {
   const {i18n } = useTranslation();
   
   const [user, setUser] = useState({})
+
   React.useEffect(() => {
     let unsubscribe = onAuthStateChanged(auth,
       (currentUser) => {
@@ -44,13 +45,18 @@ const Post = () => {
     }
   }
   
+  const location = JSON.parse(localStorage.getItem("Cords"))
   const handlechange = (e) => {
     setname(e.target.value)
     console.log(name)
   }
-  const location = JSON.parse(localStorage.getItem("Cords"))
+
+ 
   // console.log("prodcut",userData) 
-  
+  useEffect(() => {
+    
+  })
+
   const loci = JSON.parse(localStorage.getItem('Cords'));
   const lng = loci[0].longi;
   const lat= loci[0].lati
@@ -59,13 +65,13 @@ const Post = () => {
   console.log("from hash",hash)
   
 
-  // {/*submitting input data to database */ }
+  /*submitting input data to database */ 
   
   const handleSubmit = async (e) => {
     e.preventDefault();
     await addDoc(collection(db, "users"), {
-      userLocation: location.map((loc) => loc),
-      geohash: hash,
+       userLocation: location.map((loc) => loc),
+       geohash: hash,
       UserName: name,
       Description: desc,
       createdAt: serverTimestamp(),
@@ -99,8 +105,8 @@ const Post = () => {
             <div className="form">              
               {location && location.map((loc) => {
                 return (<div key={loc.name} className="card1" style={{ display: "block", textAlign: "center", height: "12rem", }}>
-                  <span><strong>{user.displayName ? user.displayName : <Trans i18nKey="Post.5">User</Trans>}
-                    <Trans i18nKey="Post.6"> your co-ordinates are:</Trans></strong> </span>
+                  <span><strong>{user.displayName ? user.displayName:<Trans i18nKey="Post.5">User</Trans>}
+                    <Trans i18nKey="Post.6">Your co-ordinates are:</Trans></strong> </span>
                   <hr style={{ margin: ".5rem", }} />
                   <div ><strong><Trans i18nKey="Profile.4">Latitude </Trans>: </strong>{loc.lati}</div>
                   <div><strong><Trans i18nKey="Profile.5">Longitude </Trans>: </strong>{loc.longi}</div>
@@ -108,8 +114,8 @@ const Post = () => {
               })}
             </div>
             <div className="button">
-              {!location ?
-                <button onClick={(e) => getlocation(e)} > <Trans i18nKey="Post.3">Latitude:To Know Your Location</Trans></button> : ""}
+           
+                <button onClick={(e) => getlocation(e)} > <Trans i18nKey="Post.3">To Know Your Location</Trans></button>
             </div>
             <div className="button">
               <button onClick={(e) => { handleSubmit(e) }}><Trans i18nKey="Post.2">Submit </Trans></button>

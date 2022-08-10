@@ -33,10 +33,10 @@ i18n
           },  Post: {
             1: "Hello",
             2: "Submit",
-            3: "To Kow Your Location <strong>Click Here!",
+            3: "To Know Your Exact Location <strong>Click Here!",
             4: "Description",
             5: "User",
-            6:"your co-ordinates are:"
+            6:" Your co-ordinates are:"
           },
           logout: {
             1:"Logout"
@@ -88,7 +88,7 @@ i18n
             Post: {
               1: "नमस्ते",
               2: "जमा करें",
-              3: "अपनी स्थान जानने के लिए <strong>यहां क्लिक करें!",
+              3: "अपना सटीक स्थान जानने के लिए <strong>यहां क्लिक करें!",
               4: "विवरण",
               5: "उपयोगकर्ता",
               6:"आपके निर्देशांक हैं:"
