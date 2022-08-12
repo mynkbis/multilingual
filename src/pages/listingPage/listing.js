@@ -144,53 +144,91 @@ const Listing = () => {
   // }
 
 
- const locts = async () => {
+//  const locts = async () => {
   
    
    
-   const center = [27.1766701, 78.0080745];
-  const radiusInM = 50 * 1000;
+//    const center = [27.1766701, 78.0080745];
+//   const radiusInM = 50 * 1000;
+
+//   // Each item in 'bounds' represents a startAt/endAt pair. We have to issue
+//   // a separate query for each pair. There can be up to 9 pairs of bounds
+//   // depending on overlap, but in most cases there are 4.
+//   const bounds = geofire.geohashQueryBounds(center, radiusInM);
+//   const promises = [];
+//   for (const b of bounds) {
+//     const q = await getDocs(collection(db, "users"),
+//       orderBy('geohash')
+//       ,startAt(b[0])
+//       ,endAt(b[1]));
+//     promises.push(q);
+//     console.log("p",promises)
+//   }
+
+//   // Collect all the query results together into a single list
+//   Promise.all(promises).then((snapshots) => {
+//     const matchingDocs = [];
+//     for (const snap of snapshots) {
+//       for (const doc of snap.docs) {
+//         console.log(snap, "testing")
+//         const lat = doc.get('userLocation.lati');
+//         const lng = doc.get('userLocation.longi');
+
+//         // We have to filter out a few false positives due to GeoHash
+//         // accuracy, but most will match
+//         const distanceInKm = geofire.distanceBetween([lat, lng], center);
+//         const distanceInM = distanceInKm * 1000;
+//         if (distanceInM <= radiusInM) {
+//           matchingDocs.push(doc);
+//         }
+//       }
+//     }
+
+//     return matchingDocs;
+//   })
+//     // [END_EXCLUDE]
+//   }
+
+//   // [END fs_geo_query_hashes]
+   
+const locts = () => {
+   const center = [28, 78];
+   const radiusInM = 50 * 1000;
 
   // Each item in 'bounds' represents a startAt/endAt pair. We have to issue
   // a separate query for each pair. There can be up to 9 pairs of bounds
   // depending on overlap, but in most cases there are 4.
   const bounds = geofire.geohashQueryBounds(center, radiusInM);
-  const promises = [];
+  const arr = []
   for (const b of bounds) {
-    const q = await getDocs(collection(db, "users"),
+    const q = getDocs(collection(db, 'users'),
       orderBy('geohash')
       ,startAt(b[0])
       ,endAt(b[1]));
-    promises.push(q);
-    console.log("p",promises)
-  }
 
-  // Collect all the query results together into a single list
-  Promise.all(promises).then((snapshots) => {
+      arr.push(q)
+   }
+
+   Promise.all(arr).then((snapshots) => {
     const matchingDocs = [];
     for (const snap of snapshots) {
       for (const doc of snap.docs) {
-        console.log(snap, "testing")
-        const lat = doc.get('userLocation.lati');
-        const lng = doc.get('userLocation.longi');
-
-        // We have to filter out a few false positives due to GeoHash
-        // accuracy, but most will match
+        let data = doc.data();
+        let lat = Number(data.userLocation[0].lati)
+        let lng = Number(data.userLocation[0].longi)
         const distanceInKm = geofire.distanceBetween([lat, lng], center);
         const distanceInM = distanceInKm * 1000;
+        console.log(distanceInM)
         if (distanceInM <= radiusInM) {
-          matchingDocs.push(doc);
-        }
+            matchingDocs.push(doc);
+          }
       }
-    }
-
-    return matchingDocs;
-  })
-    // [END_EXCLUDE]
+      return matchingDocs;
+      }
+    }).then((matchingDocs) => {
+       setUserData(matchingDocs.map((doc) => doc.data()))
+    }).catch(err => console.log(err))
   }
-
-//   // [END fs_geo_query_hashes]
-   
 
 
 
