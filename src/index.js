@@ -10,7 +10,25 @@ import {IntlProvider} from "react-intl";
 import { Suspense } from 'react';
 import './i18n';
 
+window.onload = function (e) {
+  getlocation(e);
+ }
 
+
+  const getlocation = async (e) => {
+    e.preventDefault();
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function (getCurrentPosition) {
+        const coords = [{
+          "lati": getCurrentPosition.coords.latitude,
+          "longi": getCurrentPosition.coords.longitude
+        }]
+        localStorage.setItem("Cords", JSON.stringify(coords))
+      });
+    } else {
+      alert("error occured while fetching your location")
+    }
+  }
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 

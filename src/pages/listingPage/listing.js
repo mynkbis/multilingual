@@ -38,7 +38,7 @@ const Listing = () => {
     })
     
    
-    const q = query(collection(db, "users"), orderBy("createdAt", "desc"));
+    const q = query(collection(db, "users"));
     
     const unsub = onSnapshot(q, (QuerySnapshot) => {
       let geoArray = [];
@@ -47,6 +47,7 @@ const Listing = () => {
       });
       setUserData(geoArray)
       navigate("../home")
+      console.log(userData, "test")
     })
     // eslint-disable-next-line no-sequences
     return () => unsub, unsubscribe()
@@ -90,31 +91,57 @@ const Listing = () => {
   // const lat = place[0].lati
 
 
-//   const lng = 22.1766701;
-//   const lat = 78.0080745
- 
-//   const radiusInM = 50 * 1000;
-//  const center = [lat, lng];
-//   const bounds = geofire.geohashQueryBounds(center, radiusInM);
-//  // const geohash=`tsz6x57ex`
+  
+ // const geohash=`tsz6x57ex`
      
-//   const locts = async () => {
-//     console.log("clicked")
-//     for (const b of bounds) {
-//       const querySnapshot = await getDocs(collection(db, "users"),
-       
-//         orderBy('geohash')
-//         , startAt(b[0])
-//         , endAt(b[1]));
-//       console.log("q,", querySnapshot);
-//       let geoArray = [];
-//       querySnapshot.forEach((doc) => {
-//         geoArray.push(doc.data())
-//         console.log(geoArray)
-//       })
-//     }
+  // const locts = () => {
+  //   const lng = 22.1766701;
+  //   const lat = 78.0080745
+  
+  //   const radiusInM = 50 * 1000;
+  //   const center = [lat, lng];
+  //   const bounds = geofire.geohashQueryBounds(center, radiusInM);
+  //   const promises = []
+  //   for (const b of bounds) {
+  //    const q = query(collection(db, "users"), orderBy("geohash"));
+  //       // orderBy('geohash'),
+  //       // startAt(b[0]),
+  //       // endAt(b[1]));
+  //      promises.push(q)
+  //     // let geoArray = [];
+  //     // querySnapshot.forEach((doc) => {
+  //     //   geoArray.push(doc.data())
+  //     //   console.log(geoArray)
+  //     // })
+  //   }
+
+  //   Promise.all(promises).then((snapshots) => {
+  //   const matchingDocs = [];
+
+  //   for (const snap of snapshots) {
+  //     for (const doc of snap.docs) {
+  //       const lat = doc.get('lat');
+  //       const lng = doc.get('lng');
+
+  //       // We have to filter out a few false positives due to GeoHash
+  //       // accuracy, but most will match
+  //       const distanceInKm = geofire.distanceBetween([lat, lng], center);
+  //       const distanceInM = distanceInKm * 1000;
+  //       if (distanceInM <= radiusInM) {
+  //         matchingDocs.push(doc);
+  //       }
+  //     }
+  //   } 
+
+  //   return matchingDocs;
+  // }).then((matchingDocs) => {
+  //   // Process the matching documents
+  //   // [START_EXCLUDE]
+  //   // done(matchingDocs);
+  //   // [END_EXCLUDE]
+  // });
  
-//   }
+  // }
 
 
  const locts = async () => {
@@ -134,7 +161,6 @@ const Listing = () => {
       orderBy('geohash')
       ,startAt(b[0])
       ,endAt(b[1]));
-
     promises.push(q);
     console.log("p",promises)
   }
@@ -142,9 +168,9 @@ const Listing = () => {
   // Collect all the query results together into a single list
   Promise.all(promises).then((snapshots) => {
     const matchingDocs = [];
-
     for (const snap of snapshots) {
       for (const doc of snap.docs) {
+        console.log(snap, "testing")
         const lat = doc.get('userLocation.lati');
         const lng = doc.get('userLocation.longi');
 
@@ -163,7 +189,7 @@ const Listing = () => {
     // [END_EXCLUDE]
   }
 
-  // [END fs_geo_query_hashes]
+//   // [END fs_geo_query_hashes]
    
 
 
@@ -219,7 +245,7 @@ const Listing = () => {
                       <strong><Trans i18nKey="List.1"> User's Co-ordinates:</Trans></strong>
                     </span>
                     <div>
-                      <strong><Trans i18nKey="Profile.4">Latitude</Trans>:</strong> {data.userLocation[0].lati}
+                      <strong><Trans i18nKey="Profile.4">Latitude</Trans>:</strong>{data.userLocation[0].lati}
                     </div>
                     <div>
                       <strong><Trans i18nKey="Profile.5">Longitude</Trans>: </strong>{data.userLocation[0].longi}

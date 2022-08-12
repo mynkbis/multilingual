@@ -19,7 +19,7 @@ const SignoutButton = () => {
 
     const logout = async () => {
         await signOut(auth);
-        localStorage.clear();
+        localStorage.removeItem("User1");
         Navigate("../login")
     }
     return (

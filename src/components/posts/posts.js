@@ -51,17 +51,17 @@ const Post = () => {
     console.log(name)
   }
 
- 
+ console.log(location,"ts")
   // console.log("prodcut",userData) 
   useEffect(() => {
     
   })
 
   const loci = JSON.parse(localStorage.getItem('Cords'));
-  const lng = loci[0].longi;
-  const lat= loci[0].lati
+  const longi = loci[0].longi;
+  const lati= loci[0].lati
   
-  const hash = geohash.encode(lat, lng);
+  const hash = geohash.encode(lati, longi);
   console.log("from hash",hash)
   
 
@@ -70,7 +70,7 @@ const Post = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await addDoc(collection(db, "users"), {
-       userLocation: location.map((loc) => loc),
+      userLocation: [{lati, longi}],
        geohash: hash,
       UserName: name,
       Description: desc,
