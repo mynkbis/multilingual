@@ -9,15 +9,18 @@ const ForgetPassword = () => {
   const { t, i18n } = useTranslation();
   const { useState } = React;
   const [email, setEmail] = useState("");
+     const [errors, setErrors] = useState({});
   const navigate = useNavigate()
-  const sendPasswordReset = async (email) => {
+
+  const sendPasswordReset = async (e) => {
+     e.preventdefault()
     try {
       await sendPasswordResetEmail(auth, email);
       alert("Password reset link sent!");
-      navigate("/login")
+      navigate("../login")
     } catch (err) {
       console.error(err);
-      alert(err.message);
+      // alert("email id not matched with database");
     }
 };
   return (
@@ -45,7 +48,7 @@ const ForgetPassword = () => {
                   <i className="fa fa-envelope"></i>
                 </div>
                 <div className="button">
-                  <button onClick={() => sendPasswordReset(email)}><Trans i18nKey="Post.2">Submit</Trans></button>
+                  <button type='submit' onClick={(e) => sendPasswordReset(e)}><Trans i18nKey="Post.2">Submit</Trans></button>
                 </div>
               </form>
               <hr />

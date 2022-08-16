@@ -1,9 +1,11 @@
 .container1 {
     display: flex;
+    justify-content: space-between;
     flex-wrap: wrap;
-    justify-content: space-around;
-}
 
+
+
+}
 
 
 .container {
@@ -15,11 +17,11 @@
 .container {
     min-height: 80vh;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
     background-color: #eee;
     text-align: center;
-    flex-wrap: wrap;
+    flex-wrap: wrap-reverse;
 }
 
 .card {
@@ -49,4 +51,10 @@
     position: absolute;
     top: 1rem;
     right: 2rem;
+}
+
+.location {
+    display: flex;
+    padding: 10px;
+    margin: 10px;
 }

@@ -17,7 +17,7 @@
 }
 
 .container .card {
-    height: 530px;
+    height: 550px;
     width: 800px;
     background-color: #fff;
     position: relative;
@@ -188,6 +188,12 @@ input[type="password"] {
     top: 2px;
     font-size: 10px;
     font-weight: 600;
+}
+
+.input-text p {
+    color: red;
+    font-size: x-small;
+    margin-bottom: -1rem;
 }
 
 .rem_pass {

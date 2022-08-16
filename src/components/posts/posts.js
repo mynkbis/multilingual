@@ -93,13 +93,14 @@ const Post = () => {
         <div className="card">
           <form >
             <div className="inputValues">
-              <div className="input-text">
-                <span><strong><Trans i18nKey="Profile.2">Name: </Trans> </strong></span>
-                <input placeholder='Name' defaultValue={name} onChange={(e) => { handlechange(e) }} />
+              <div className="inputValues">
+                <span>   <strong><Trans i18nKey="Profile.2">Name </Trans>: </strong></span>
+                <input type="text" placeholder='Name' defaultValue={name} onChange={(e) => { handlechange(e) }} />
               </div>
-              <div className="input-text">
-                <span><strong><Trans i18nKey="Post.4">Description </Trans>: </strong></span>
-                <input placeholder="Description" defaultValue={desc} onChange={(e) => { setDesc(e.target.value) }} />
+              <div className="inputValues">
+                <span>  <strong><Trans i18nKey="Post.4">Description </Trans>: </strong></span>
+                <input type="text" placeholder="Description" defaultValue={desc} onChange={(e) => { setDesc(e.target.value) }} />
+              
               </div>
             </div>
             <div className="form">              
@@ -114,8 +115,7 @@ const Post = () => {
               })}
             </div>
             <div className="button">
-           
-                <button onClick={(e) => getlocation(e)} > <Trans i18nKey="Post.3">To Know Your Location</Trans></button>
+                           <button onClick={(e) => getlocation(e)} > <Trans i18nKey="Post.3">To Know Your Location</Trans></button>
             </div>
             <div className="button">
               <button onClick={(e) => { handleSubmit(e) }}><Trans i18nKey="Post.2">Submit </Trans></button>

@@ -5,8 +5,8 @@ import Navbar from './components/navbar/navbar';
 import LogIn from './pages/login/login';
 import SignUp from './pages/signup/signup';
 import ForgetPassword from './pages/forgetPass/forgetPassword';
-import Profile from './pages/profile/profile';
 import Post from './components/posts/posts';
+import ProfilePage from './pages/profile';
 
 
 
@@ -21,7 +21,7 @@ function App() {
         <Route exact path="/signup" element={<SignUp />} />
         <Route exact path="/*" element={<Listing />} />
         <Route exact path="/forgetpassword" element={<ForgetPassword />} />
-        <Route exact path="/profile" element={<Profile />} />
+        <Route exact path="/profile" element={<ProfilePage />} />
           <Route exact path="/profile/post" element={<Post />} />
 
       </Routes>

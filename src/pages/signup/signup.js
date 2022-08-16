@@ -6,16 +6,16 @@ import { Link, useNavigate } from 'react-router-dom';
 import { getAuth, signInWithPopup } from "firebase/auth"
 import { onAuthStateChanged } from 'firebase/auth'
 import { useTranslation, Trans } from 'react-i18next';
+import Validation from "../../components/validation";
 
 const SignUp = () => {
-
     const { t, i18n } = useTranslation();
     const { useState } = React;    
     const[eye,seteye]=useState(true);
     const[inpass,setinpass]=useState("password");
-     const[warning,setwarning]=useState(false);
-    const[tick,settick]=useState(false);
-    
+    const[warning,setwarning]=useState(false);
+    const [tick, settick] = useState(false);
+      const[errors, setErrors]=useState({});
     const [inputText, setInputText] = useState({
         email: "",
         password: ""
@@ -64,15 +64,17 @@ const SignUp = () => {
         try {
             const user = await createUserWithEmailAndPassword(auth, inputText.email, inputText.password)
                 .then(cred => {
-                    console.log("new value", cred)
+                    // console.log("new value", cred)
                     // return db.collection('user').doc(cred.user.uid)
                 })
-            console.log(user)
+            // console.log(user)
             // in built method for registering or signup
             navigate('../home')   
         }
         catch (error) {
-            console.log(error.message)
+            setErrors(Validation(inputText));
+            // console.log(error.message)
+
         } setInputText({
             email: "",
             password: ""
@@ -106,11 +108,13 @@ const SignUp = () => {
                                 <div className="input-text">
                                     <input type="text" placeholder="Email" className={`${wemail ? "text-warning" : ""}`}
                                         value={inputText.email} onChange={inputEvent} name="email" />
+                                       {errors.email && <p>{errors.email}</p>}
                                     <i className="fa fa-envelope"></i>
                                 </div>
                                 <div className="input-text">
                                     <input type={inpass} placeholder="Password" className={` ${warning ? "warning" : ""} 
                                     ${wpassword ? "text-warning" : ""}`} value={inputText.password} onChange={inputEvent} name="password" />
+                                       {errors.password && <p>{errors.password}</p>}
                                     <i className="fa fa-lock"></i>
                                     <i onClick={Eye} className={`fa ${eye ? "fa-eye-slash" : "fa-eye"}`}></i>
                                 </div>

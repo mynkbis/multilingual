@@ -18,13 +18,14 @@
 }
 
 .card {
-    height: 250px;
-    width: 800px;
+    height: 250x;
+    width: 100%;
     background-color: #fff;
     position: relative;
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
     font-family: 'Poppins', sans-serif;
     overflow: hidden;
+    border-radius: 20px;
 }
 
 .card1 {
@@ -37,15 +38,32 @@
     overflow: hidden;
 }
 
-.input-text i {
-    position: absolute;
-    top: 17px;
-    font-size: 13px;
-    cursor: pointer;
+input[type="text"] {
+    height: 35px;
+    width: 100%;
+    border: none;
+    border-radius: 7px;
+    background-color: #f5f5f5;
+    outline: 0;
+    padding: 0 10px;
+    font-size: 15px;
+    padding-left: 30px;
 }
 
 .inputValues {
     display: flex;
+    padding-left: 1rem;
+    padding-top: 10px;
+
+}
+
+
+.inputValues span {
+    padding: 5px;
+}
+
+.form {
+    padding-top: 1rem;
 
 }
 
@@ -53,6 +71,26 @@
     background-color: green;
 }
 
+.button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    padding: 10px;
+
+}
+
+.button button {
+    height: 40px;
+    width: 20%;
+    background-color: #ff805d;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.5s;
+}
 
 
 @media (max-width:750px) {
@@ -66,7 +104,11 @@
 
     }
 
-    .container .card .left-side {
+    .inputValues {
+        display: block;
+    }
+
+    .container .card .left-side .inputValues {
 
         display: none;
     }

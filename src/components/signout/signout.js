@@ -4,6 +4,7 @@ import {onAuthStateChanged, signOut} from 'firebase/auth'
 import { useNavigate } from 'react-router-dom'
 import Button from '@mui/material/Button';
 import { Trans, useTranslation } from 'react-i18next';
+import { Typography } from '@mui/material';
 
 const SignoutButton = () => {
     const { t, i18n } = useTranslation();
@@ -25,10 +26,13 @@ const SignoutButton = () => {
     return (
         <>
             <div>
-                {!user ? true : <Button sx={{
+                {!user ? true :<div><Typography variant="div" sx={{
                     backgroundColor: "#ff805d", '&:hover':
-                        { backgroundColor: '#ffffff', boxShadow: 'none' }, width: "5rem", height: "1.9rem", ml: 15,
-                }} onClick={logout}><Trans i18nKey="Logout.1">Logout</Trans></Button>}
+                        { color: "black" }, ml:5,
+                }} >{user.email}</Typography> <Button sx={{
+                    backgroundColor: "#ffffff", '&:hover':
+                        { backgroundColor: 'red', boxShadow: 'none', color: 'white', fontWeight: 800 }, width: "5rem", height: "1.9rem", ml: 1,
+                }} onClick={logout}><Trans i18nKey="Logout.1">Logout</Trans></Button> </div>}
             </div>
         </>
     )

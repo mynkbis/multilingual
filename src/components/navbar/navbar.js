@@ -117,46 +117,35 @@ const [user, setUser] = React.useState({})
           </Box>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <Button onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: "white", display: "block" }} >
-              <Link style={{ color: "white", textDecoration: "none" }} to="./home">
+              sx={{ my: 2, color: "white", display: "block",'&:hover':{fontWeight:800}  }} >
+              <Link style={{ color: "white", textDecoration: "none", '&:hover':{fontWeight:800} }} to="./home">
                 <Trans i18nKey="description.part1">Home</Trans>
               </Link>
             </Button>
             <Button onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: "white", display: "block" }}
+              sx={{ my: 2, color: "white", display: "block", '&:hover':{fontWeight:800} }}
             >
               {/* conditon for user to show screen if user is logged in or not*/}
               {!user ?
-                <NavLink style={{ color: "white", textDecoration: "none" }} to="./login">
+                <NavLink style={{ color: "white", textDecoration: "none",'&:hover':{fontWeight:800,} }} to="./login">
                   <Trans i18nKey="description.part2">Login</Trans>
                 </NavLink>
-                : <NavLink style={{ color: "white", textDecoration: "none" }}
+                : <NavLink style={{ color: "white", textDecoration: "none" ,'&:hover':{fontWeight:800} }}
                   to='../profile'> <Trans i18nKey="description.part3">Profile</Trans></NavLink>}
             </Button>
           </Box>
           <Typography variant={"ul"} >
             <Typography>
               {Object.keys(lngs).map((lng) => (
-                <Button key={lng} style={{ fontWeight: i18n.resolvedLanguage === lng ? 'bold' : 'normal' }}
+                <Button key={lng} style={{ backgroundColor: i18n.resolvedLanguage === lng ? 'white' : '', fontWeight: i18n.resolvedLanguage === lng ? 'white' : 'grey' }}
                   sx={{ backgroundColor: "#ff805d", '&:hover': { backgroundColor: '#ffffff', boxShadow: 'none' }, width: "5rem", height: "1.9rem", }}
                   type="submit" onClick={() => i18n.changeLanguage(lng)}>
                   {lngs[lng].nativeName}
                 </Button>
               ))}
-          {/* <Trans i18nKey="description.part1">
-            Edit <code>src/App.js</code> and save to reload.
-        </Trans>
-         <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {t('description.part2')}
-        </a> */}
-            </Typography>
+               </Typography>
           </Typography>
-          {/* {!userDetails? <></>: <Typography>{userDetails}</Typography>} */}
+  
           <Typography component={'div'}>
             <SignoutButton />   {/*signout button component */}
           </Typography>

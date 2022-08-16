@@ -15,6 +15,7 @@ import { startAt } from 'firebase/database'
 import { async } from '@firebase/util'
 import firebase from 'firebase/app';
 import 'firebase/firestore';
+import { Button } from '@mui/material'
 const geofire = require('geofire-common');
 
 
@@ -30,6 +31,7 @@ const Listing = () => {
   React.useEffect(() => {
     window.onload = function (e) {
       getlocation(e);
+      getTimeStamp()
     };
  
     let unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -47,8 +49,16 @@ const Listing = () => {
       });
       setUserData(geoArray)
       navigate("../home")
-      console.log(userData, "test")
+      // console.log(userData, "test")
     })
+
+
+
+
+
+
+
+
     // eslint-disable-next-line no-sequences
     return () => unsub, unsubscribe()
 
@@ -69,131 +79,32 @@ const Listing = () => {
     }
   }
 
+
+  const getTimeStamp = (userData) => {
+    const unixTimestamp = userData.createdAt
+    console.log(unixTimestamp, "sdfsdfsd")
+    const date = new Date(unixTimestamp * 1000)
+    console.log(date, "date")
+    return (
+date
+    )
+  }
+ 
+
+
+
+
+
+
   
   const handleDelete = async (id) => {
     await deleteDoc(doc(db, "users", id));
   }
   
-  // const getTimeStamp = (data1) => {
-  //   const unixTimestamp = {data1}
-  //   // console.log(data1)
-  //   const date = new Date(data1 * 1000)
-  //   // console.log(date)
-  //   return (
-  // ""
-  //   )
-  // }
-
-
-
-  // const place = JSON.parse(localStorage.getItem('Cords'));
-  //  const lng = place[0].longi;
-  // const lat = place[0].lati
-
-
   
- // const geohash=`tsz6x57ex`
-     
-  // const locts = () => {
-  //   const lng = 22.1766701;
-  //   const lat = 78.0080745
-  
-  //   const radiusInM = 50 * 1000;
-  //   const center = [lat, lng];
-  //   const bounds = geofire.geohashQueryBounds(center, radiusInM);
-  //   const promises = []
-  //   for (const b of bounds) {
-  //    const q = query(collection(db, "users"), orderBy("geohash"));
-  //       // orderBy('geohash'),
-  //       // startAt(b[0]),
-  //       // endAt(b[1]));
-  //      promises.push(q)
-  //     // let geoArray = [];
-  //     // querySnapshot.forEach((doc) => {
-  //     //   geoArray.push(doc.data())
-  //     //   console.log(geoArray)
-  //     // })
-  //   }
-
-  //   Promise.all(promises).then((snapshots) => {
-  //   const matchingDocs = [];
-
-  //   for (const snap of snapshots) {
-  //     for (const doc of snap.docs) {
-  //       const lat = doc.get('lat');
-  //       const lng = doc.get('lng');
-
-  //       // We have to filter out a few false positives due to GeoHash
-  //       // accuracy, but most will match
-  //       const distanceInKm = geofire.distanceBetween([lat, lng], center);
-  //       const distanceInM = distanceInKm * 1000;
-  //       if (distanceInM <= radiusInM) {
-  //         matchingDocs.push(doc);
-  //       }
-  //     }
-  //   } 
-
-  //   return matchingDocs;
-  // }).then((matchingDocs) => {
-  //   // Process the matching documents
-  //   // [START_EXCLUDE]
-  //   // done(matchingDocs);
-  //   // [END_EXCLUDE]
-  // });
- 
-  // }
-
-
-//  const locts = async () => {
-  
-   
-   
-//    const center = [27.1766701, 78.0080745];
-//   const radiusInM = 50 * 1000;
-
-//   // Each item in 'bounds' represents a startAt/endAt pair. We have to issue
-//   // a separate query for each pair. There can be up to 9 pairs of bounds
-//   // depending on overlap, but in most cases there are 4.
-//   const bounds = geofire.geohashQueryBounds(center, radiusInM);
-//   const promises = [];
-//   for (const b of bounds) {
-//     const q = await getDocs(collection(db, "users"),
-//       orderBy('geohash')
-//       ,startAt(b[0])
-//       ,endAt(b[1]));
-//     promises.push(q);
-//     console.log("p",promises)
-//   }
-
-//   // Collect all the query results together into a single list
-//   Promise.all(promises).then((snapshots) => {
-//     const matchingDocs = [];
-//     for (const snap of snapshots) {
-//       for (const doc of snap.docs) {
-//         console.log(snap, "testing")
-//         const lat = doc.get('userLocation.lati');
-//         const lng = doc.get('userLocation.longi');
-
-//         // We have to filter out a few false positives due to GeoHash
-//         // accuracy, but most will match
-//         const distanceInKm = geofire.distanceBetween([lat, lng], center);
-//         const distanceInM = distanceInKm * 1000;
-//         if (distanceInM <= radiusInM) {
-//           matchingDocs.push(doc);
-//         }
-//       }
-//     }
-
-//     return matchingDocs;
-//   })
-//     // [END_EXCLUDE]
-//   }
-
-//   // [END fs_geo_query_hashes]
-   
 const locts = () => {
-   const center = [28, 78];
-   const radiusInM = 50 * 1000;
+   const center = [20, 78];
+   const radiusInM = `${loci}` * 10000;
 
   // Each item in 'bounds' represents a startAt/endAt pair. We have to issue
   // a separate query for each pair. There can be up to 9 pairs of bounds
@@ -231,33 +142,27 @@ const locts = () => {
   }
 
 
-
-
-
-
-
-   
-
-
-  
-  
-
-
-  
-
-  
-
   return (
     <div style={{ "backgroundColor": "#eee", }}> <h3 style={{ paddingTop: "1rem", textAlign: "center", color: "#ff805d" }}>
       <Trans i18nKey="List.3">All Posts</Trans></h3>
       <div style={{ textAlign: "center" }}>
         <input style={{ width: "20rem", height: "2rem", border: "none", margin: "1rem", }}
-          type="search" value={search} placeholder=" Search" onChange={(e) => { setSearch(e.target.value) }} />
+          type="search" value={search} placeholder=" Search"
+          onChange={(e) => { setSearch(e.target.value) }} />
       </div>
-      <div>Location Filter
-        {/* <input type="integer" onChange={()=>{geohash()}} /> */}
-        <button onClick={() => { locts() }}>Location</button>
-      </div>
+      <div className='location'>
+        <span>Locate Nearby User's</span>
+        <div className='inputfield'>
+          <i className="fa-solid fa-location-dot"></i>
+          <input type="number" placeholder="within" step="2" min="0" value={loci}
+            max="100" onChange={(e) => { setLoci(e.target.value) }} /> Km 
+          
+        </div>
+        <Button sx={{
+            backgroundColor: "#ff805d", color: "#ffff", '&:hover': {
+          backgroundColor: "green", fontWeight: 800
+        }}} onClick={() => { locts() }}>Locate</Button>
+        </div>
       <div className='container1'>
         {!userData && !userData ? <div> Loading...</div> :
           userData.filter((data) => {
@@ -288,7 +193,7 @@ const locts = () => {
                     <div>
                       <strong><Trans i18nKey="Profile.5">Longitude</Trans>: </strong>{data.userLocation[0].longi}
                     </div>
-                    {/* <div><strong>Posted on: </strong>{getTimeStamp(data.createdAt)}</div>  */}
+                    <div><strong>Posted on: </strong>{data.createdAt.seconds}</div> 
               
                   
 

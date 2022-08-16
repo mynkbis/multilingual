@@ -6,8 +6,7 @@ import { getAuth, signInWithPopup } from "firebase/auth"
 import { useDispatch } from "react-redux";
 import { login} from '../../redux/userSlice'
 import { Trans, useTranslation } from 'react-i18next';
-import { getDefaultMiddleware } from '@reduxjs/toolkit';
-import { WindowSharp } from "@mui/icons-material";
+import Validation from "../../components/validation";
 
 const LogIn = () => {
     const { useState } = React;
@@ -22,6 +21,7 @@ const LogIn = () => {
         email: "",
         password:""
     });
+    
     useEffect(() => {
          window.onload = function (e) {
       getlocation(e);
@@ -65,13 +65,13 @@ const LogIn = () => {
                         })
                     )
                     navigate("../home")
-                  
-
-                }
+                       }
                     // ...
             }).catch((error) => {
+                alert("Please fill correct information")
+                      navigate("../login")
         // Handle Errors here.
-                //  alert("Please try again)
+                //  
             });
     }
 
@@ -110,11 +110,17 @@ const LogIn = () => {
     
     const submitForm = async (e) => {
         e.preventDefault();
-        const user = await signInWithEmailAndPassword(auth, inputText.email, inputText.password)
-        console.log("user details", user)
-        if (user) {            
-            navigate('../home')
-        }       
+        try {
+            const user = await signInWithEmailAndPassword(auth, inputText.email, inputText.password)
+            console.log("user details", user)
+            if (user) {
+                navigate('../home')
+            }
+        }      catch (error) {
+      setErrors(Validation(inputText));
+            alert("Details not matched, Please enter correct details to login")
+            navigate('../login')
+    }   
         // using inbuit method of firebase fr signing in.
        
         setwemail(false);
@@ -125,7 +131,7 @@ const LogIn = () => {
         else if (inputText.password == "")
             setwpassword(true);
         else {
-            alert("Login Successfull");
+            // alert("Login Successfull");
         }
     }     
 
@@ -144,14 +150,16 @@ const LogIn = () => {
                             </div>
                             <form onSubmit={submitForm}>
                                 <div className="input-text">
-                                    <input type="text" placeholder="Email" className={`${wemail ? "text-warning" : ""}`}
+                                      <i className="fa fa-envelope"></i>
+                                    <input type="text" placeholder="Email" className={`${wemail ? "please fill the details" : ""}`}
                                         value={inputText.email} onChange={inputEvent} name="email" />
-                                    <i className="fa fa-envelope"></i>
+                                    {errors.email && <p>{errors.email}</p>}
                                 </div>
                                 <div className="input-text">
                                     <input type={inpass} placeholder="Password" className={` ${warning ? "warning" : ""}
                                                          ${wpassword ? "text-warning" : ""}`}
                                         value={inputText.password} onChange={inputEvent} name="password" />
+                                     {errors.password && <p>{errors.password}</p>}
                                     <i className="fa fa-lock"></i>
                                     <i onClick={Eye} className={`fa ${eye ? "fa-eye-slash" : "fa-eye"}`}></i>
                                 </div>
