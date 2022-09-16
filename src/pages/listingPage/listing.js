@@ -194,8 +194,7 @@ const locts = () => {
                       <strong><Trans i18nKey="Profile.5">Longitude</Trans>: </strong>{data.userLocation[0].longi}
                     </div>
                     <div><strong>Posted on: </strong>{data.createdAt.seconds}</div> 
-              
-                  
+                            
 
                     {/* { currentUser=== data.email && user?  <button onClick={() => {
             handleDelete(data.id)
