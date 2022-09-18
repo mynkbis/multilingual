@@ -1,31 +1,17 @@
 .container1 {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     flex-wrap: wrap;
-
-
-
+    margin: 0 20px;
 }
 
-
-.container {
-    min-height: 100vh;
-    background-color: #eee;
-
-}
-
-.container {
-    min-height: 80vh;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #eee;
-    text-align: center;
-    flex-wrap: wrap-reverse;
+.input {
+    padding-left: 1rem;
+    font-size: medium;
 }
 
 .card {
-    width: 100%;
+    min-width: 500px;
     height: 15rem;
     background-color: #fff;
     position: relative;
@@ -57,4 +43,15 @@
     display: flex;
     padding: 10px;
     margin: 10px;
+}
+
+.inputfield p {
+    margin: 0 5px;
+}
+
+@media only screen and (max-width: 786px) {
+    .card {
+        min-width: 50%;
+        margin-right: 2rem;
+    }
 }

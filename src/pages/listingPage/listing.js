@@ -16,6 +16,7 @@ import { async } from '@firebase/util'
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import { Button } from '@mui/material'
+import moment from 'moment'
 const geofire = require('geofire-common');
 
 
@@ -31,7 +32,7 @@ const Listing = () => {
   React.useEffect(() => {
     window.onload = function (e) {
       getlocation(e);
-      getTimeStamp()
+      // getTimeStamp()
     };
  
     let unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -80,15 +81,16 @@ const Listing = () => {
   }
 
 
-  const getTimeStamp = (userData) => {
-    const unixTimestamp = userData.createdAt
-    console.log(unixTimestamp, "sdfsdfsd")
-    const date = new Date(unixTimestamp * 1000)
-    console.log(date, "date")
-    return (
-date
-    )
-  }
+//   const getTimeStamp = (userData) => {
+//     const unixTimestamp = userData.createdAt
+//      var a = moment().toString(unixTimestamp);
+//     console.log(a, "sdfsdfsd")
+//     const date = new Date(unixTimestamp * 1000)
+//     console.log(date, "date")
+//     return (
+// date
+//     )
+//   }
  
 
 
@@ -145,23 +147,23 @@ const locts = () => {
   return (
     <div style={{ "backgroundColor": "#eee", }}> <h3 style={{ paddingTop: "1rem", textAlign: "center", color: "#ff805d" }}>
       <Trans i18nKey="List.3">All Posts</Trans></h3>
-      <div style={{ textAlign: "center" }}>
-        <input style={{ width: "20rem", height: "2rem", border: "none", margin: "1rem", }}
-          type="search" value={search} placeholder=" Search"
+      <div  style={{ textAlign: "center" }}>
+        <input className='input' style={{ width: "20rem", height: "2rem", border: "none", margin: "1rem", }}
+          type="search" value={search} placeholder="   Search"
           onChange={(e) => { setSearch(e.target.value) }} />
       </div>
       <div className='location'>
-        <span>Locate Nearby User's</span>
+        <Trans i18nKey="locate.1"><span>Locate Nearby User's</span></Trans>
         <div className='inputfield'>
-          <i className="fa-solid fa-location-dot"></i>
-          <input type="number" placeholder="within" step="2" min="0" value={loci}
-            max="100" onChange={(e) => { setLoci(e.target.value) }} /> Km 
+          <p className="fa-solid fa-location-dot"></p>
+          <input type="number" placeholder=" within" step="2" min="0" value={loci}
+            max="100" onChange={(e) => { setLoci(e.target.value) }} /> <Trans i18nKey="locate.3"> Km</Trans> 
           
         </div>
         <Button sx={{
             backgroundColor: "#ff805d", color: "#ffff", '&:hover': {
           backgroundColor: "green", fontWeight: 800
-        }}} onClick={() => { locts() }}>Locate</Button>
+        }, width:"5rem", height:"1.8rem", "margin-top":"-.2rem", "margin-left":"1rem"}} onClick={() => { locts() }}><Trans i18nKey="locate.2">Locate</Trans></Button>
         </div>
       <div className='container1'>
         {!userData && !userData ? <div> Loading...</div> :
@@ -193,13 +195,13 @@ const locts = () => {
                     <div>
                       <strong><Trans i18nKey="Profile.5">Longitude</Trans>: </strong>{data.userLocation[0].longi}
                     </div>
-                    <div><strong>Posted on: </strong>{data.createdAt.seconds}</div> 
-                            
+                    {/* <div><strong>Posted on: </strong>{data.createdAt.seconds}</div> 
+                             */}
 
                     {/* { currentUser=== data.email && user?  <button onClick={() => {
             handleDelete(data.id)
               }} >Del</button>: ""}   */}
-                    {!user ? "" : <div> {user.email === data.email && user ? <button className='buttonPosition' onClick={() => {
+                    {!user ? <em><Trans i18nKey="Profile.7">Only Author have right to do Modification!</Trans></em> : <div> {user.email === data.email && user ? <button className='buttonPosition' onClick={() => {
                       handleDelete(data.id)
                     }}><BsTrash size="1rem" border="none" color='#ff805d' />
                     </button> : <em><Trans i18nKey="Profile.7">Only Author have right to do Modification!</Trans></em>}</div>}

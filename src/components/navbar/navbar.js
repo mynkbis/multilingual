@@ -138,7 +138,7 @@ const [user, setUser] = React.useState({})
             <Typography>
               {Object.keys(lngs).map((lng) => (
                 <Button key={lng} style={{ backgroundColor: i18n.resolvedLanguage === lng ? 'white' : '', fontWeight: i18n.resolvedLanguage === lng ? 'white' : 'grey' }}
-                  sx={{ backgroundColor: "#ff805d", '&:hover': { backgroundColor: '#ffffff', boxShadow: 'none' }, width: "5rem", height: "1.9rem", }}
+                  sx={{ backgroundColor: "#ff805d",'&:hover': { backgroundColor: '#ffffff', boxShadow: 'none' }, width: "5rem", height: "1.9rem", margin:".5rem" }}
                   type="submit" onClick={() => i18n.changeLanguage(lng)}>
                   {lngs[lng].nativeName}
                 </Button>
