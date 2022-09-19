@@ -156,7 +156,7 @@ const locts = () => {
         <Trans i18nKey="locate.1"><span>Locate Nearby User's</span></Trans>
         <div className='inputfield'>
           <p className="fa-solid fa-location-dot"></p>
-          <input type="number" placeholder=" within" step="2" min="0" value={loci}
+          <input className='input' type="number" placeholder=" within" step="2" min="0" value={loci}
             max="100" onChange={(e) => { setLoci(e.target.value) }} /> <Trans i18nKey="locate.3"> Km</Trans> 
           
         </div>

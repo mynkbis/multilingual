@@ -95,11 +95,11 @@ const Post = () => {
             <div className="inputValues">
               <div className="inputValues">
                 <span>   <strong><Trans i18nKey="Profile.2">Name </Trans>: </strong></span>
-                <input type="text" placeholder='Name' defaultValue={name} onChange={(e) => { handlechange(e) }} />
+                <input type="text" placeholder='Name' defaultValue={name} onChange={(e) => { handlechange(e) }} required />
               </div>
               <div className="inputValues">
                 <span>  <strong><Trans i18nKey="Post.4">Description </Trans>: </strong></span>
-                <input type="text" placeholder="Description" defaultValue={desc} onChange={(e) => { setDesc(e.target.value) }} />
+                <input important type="text" placeholder="Description" defaultValue={desc} onChange={(e) => { setDesc(e.target.value) }} required/>
               
               </div>
             </div>
